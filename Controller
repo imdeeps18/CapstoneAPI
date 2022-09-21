@@ -1,0 +1,67 @@
+package com.capstone.capstoneProject.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capstone.capstoneProject.entities.Country;
+import com.capstone.capstoneProject.entities.District;
+import com.capstone.capstoneProject.entities.State;
+import com.capstone.capstoneProject.entities.World;
+import com.capstone.capstoneProject.entities.patient.Patient;
+import com.capstone.capstoneProject.services.CapstoneServices;
+
+@RestController
+@ResponseBody
+public class Controller {
+	
+	@Autowired
+	private CapstoneServices capstoneService;
+//	here the object will be created of the CapstoneServices type and now it will be able to fetch the methods inside this class
+	
+	
+	@GetMapping("/")
+	public String worldData() {
+		
+//		calling the service layer impl methods and it will return the data of it's return type
+		World dataWorld = capstoneService.getWorldData();
+		return dataWorld.toString();
+	}
+	
+	@GetMapping("/country/{countryName}")
+	public Country countryData(@PathVariable String countryName) {
+		
+//		here get the data as per total information of the country 
+//		and also here it will list the state wise total covid data cases :
+		
+		
+		Country dataCountry = capstoneService.getCountryData(countryName);
+		return dataCountry;
+	}
+	
+	@GetMapping("/country/{countryName}/{stateName}")
+	public State countryDataState(@PathVariable String countryName, @PathVariable String stateName) {
+		
+		State dataState = capstoneService.getStateData(countryName, stateName);
+		return dataState;
+		
+//		return "particular state of the country data";
+	}
+	
+	@GetMapping("/country/{countryName}/{stateName}/{districtName}")
+	public District countryDataDistrict(@PathVariable String countryName, @PathVariable String stateName, @PathVariable String districtName) {
+//		return "particular district data of the country ";
+		
+		District dataDistrict = capstoneService.getDistrictData(countryName, stateName, districtName);
+		return dataDistrict;
+	}
+	
+	@GetMapping("/patient")
+	public Patient patientData() {
+//		return "patient data information:";
+		return new Patient();
+	}
+	
+}
